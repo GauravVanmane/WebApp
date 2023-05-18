@@ -1,7 +1,7 @@
 import sqlite3
 from fastapi import FastAPI
 import uvicorn
-
+import json
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -42,10 +42,11 @@ def get_file_contents(index: str) -> str:
     return result[0]
 
 # Define a route to retrieve the file contents based on the solution index
-@app.get("/solution/{solutionIndex}")
-async def get_solution(index: str):
+@app.get("/solution/{index}")  # Update the parameter name to 'index'
+async def get_solution(index: str):  # Update the parameter name to 'index'
     # Retrieve the file contents for the given index
     contents = get_file_contents(index)
-
-    # Return the file contents as a JSON response
+    print(contents)
     return {"contents": contents}
+
+    
