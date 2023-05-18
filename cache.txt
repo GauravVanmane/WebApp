@@ -1,0 +1,47 @@
+// App.js
+import React, { useState } from "react";
+
+function App() {
+  const [index, setIndex] = useState("");
+  const [result, setResult] = useState("");
+  const [error, setError] = useState("");
+
+  const handleInputChange = (e) => {
+    setIndex(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:8000/solution/${index}`);
+      const data = await response.json();
+      if (response.ok) {
+        setResult(JSON.stringify(data));
+        setError("");
+      } else {
+        setResult("");
+        setError(data.message);
+      }
+    } catch (error) {
+      setResult("");
+      setError("An error occurred while fetching the data.");
+    }
+  };
+
+  return (
+    <div>
+      <h1>FastAPI and React Example</h1>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Enter item index:
+          <input type="number" value={index} onChange={handleInputChange} />
+        </label>
+        <button type="submit">Fetch Item</button>
+      </form>
+      {result && <div>{result}</div>}
+      {error && <div>Error: {error}</div>}
+    </div>
+  );
+}
+
+export default App;
